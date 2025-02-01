@@ -1,0 +1,70 @@
+################################################################
+### 1 - project structure
+### 2 - script to create the structure
+################################################################
+
+################################################################
+### 1 - project structure
+
+calculators/
+├── app.py                    # Главный файл Flask-приложения
+├── config.py                 # Конфигурации приложения (если нужно)
+├── requirements.txt          # Зависимости проекта
+├── .env                      # Переменные окружения (если нужно)
+
+├── calculations/             # Модули с логикой расчётов
+│   ├── __init__.py
+│   ├── base_calculator.py    # Базовый класс для калькуляторов
+│   ├── emission.py           # Расчёты для emission-тестов
+│   ├── immunity.py           # Расчёты для immunity-тестов
+
+├── data/                     # Справочные данные (JSON)
+│   ├── emission_standards.json
+│   ├── immunity_standards.json
+
+├── static/                   # Статические файлы (CSS, JS, изображения)
+│   ├── css/
+│   │   ├── style.css
+│   ├── js/
+│   │   ├── scripts.js
+│   ├── images/
+
+├── templates/                # HTML-шаблоны
+│   ├── layout.html           # Общий шаблон
+│   ├── index.html            # Главная страница
+│   ├── emission.html         # UI для emission-калькулятора
+│   ├── immunity.html         # UI для immunity-калькулятора
+
+├── routes/                   # Flask-маршруты (разделение логики по модулям)
+│   ├── __init__.py
+│   ├── main.py               # Главные маршруты (home, about и т. д.)
+│   ├── emission.py           # Маршруты для emission-калькулятора
+│   ├── immunity.py           # Маршруты для immunity-калькулятора
+
+├── tests/                    # Тесты
+│   ├── test_emission.py
+│   ├── test_immunity.py
+
+├── utils/                    # Вспомогательные функции
+│   ├── data_loader.py        # Функции загрузки JSON-файлов
+│   ├── helpers.py            # Разные вспомогательные функции
+
+################################################################
+### 2 - script to create the structure
+
+mkdir -p calculators/{calculations,data,static/{css,js,images},templates,routes,tests,utils}
+
+# Создание файлов
+touch calculators/{app.py,config.py,requirements.txt,.env}
+touch calculators/{calculations/__init__.py,calculations/base_calculator.py,calculations/emission.py,calculations/immunity.py}
+touch calculators/{data/emission_standards.json,data/immunity_standards.json}
+touch calculators/{static/css/style.css,static/js/scripts.js}
+touch calculators/{templates/layout.html,templates/index.html,templates/emission.html,templates/immunity.html}
+touch calculators/{routes/__init__.py,routes/main.py,routes/emission.py,routes/immunity.py}
+touch calculators/{tests/test_emission.py,tests/test_immunity.py}
+touch calculators/{utils/data_loader.py,utils/helpers.py}
+
+echo "Flask==3.0.0" > calculators/requirements.txt
+echo "# Flask App Configuration" > calculators/config.py
+
+echo "Структура создана! 🎉"  

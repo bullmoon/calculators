@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>RE102 Calibration Calculator</h2>
+
+<form id="calibration-form">
+    <label for="version">Standard Version:</label>
+    <select id="version" name="version">
+        <option value="MIL-STD-461E">MIL-STD-461E</option>
+        <option value="MIL-STD-461F">MIL-STD-461F</option>
+        <option value="MIL-STD-461G">MIL-STD-461G</option>
+    </select>
+
+    <label for="category">Limit Category:</label>
+    <select id="category" name="category">
+        <option value="102-1">102-1 (Surface Ship)</option>
+        <option value="102-2">102-2 (Submarine)</option>
+        <option value="102-3">102-3 (Aircraft & Space)</option>
+        <option value="102-4">102-4 (Ground)</option>
+    </select>
+
+    <label for="antenna">Antenna Type:</label>
+    <select id="antenna" name="antenna">
+        <option value="rod">Rod Antenna</option>
+        <option value="biconical">Biconical Antenna</option>
+        <option value="log_periodic">Log Periodic Antenna</option>
+        <option value="big_horn">Big Horn Antenna</option>
+        <option value="double_ridged_horn">Double Ridged Horn Antenna</option>
+    </select>
+
+    <button type="submit">Calculate</button>
+</form>
+
+<div id="results"></div>
+
+<script>
+document.getElementById("calibration-form").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    let version = document.getElementById("version").value;
+    let category = document.getElementById("category").value;
+    let antenna = document.getElementById("antenna").value;
+    let resultsDiv = document.getElementById("results");
+    
+    resultsDiv.innerHTML = "<p>Loading data...</p>";
+
+    try {
+        // Получаем список контрольных частот
+        let freqResponse = await fetch(`/api/re102/frequencies?version=${version}`);
+        let freqData = await freqResponse.json();
+        console.log("Received frequencies:", freqData);
+
+        if (!freqResponse.ok || !freqData.frequencies) {
+            throw new Error(freqData.error || "Invalid response from frequency API");
+        }
+
+        let frequencies = freqData.frequencies;
+        if (frequencies.length === 0) {
+            throw new Error(`No frequencies found for version ${version}`);
+        }
+
+        // Запрашиваем факторы антенны для каждой контрольной частоты
+        let resultsHtml = "<h3>Antenna Factors</h3><table border='1'><thead><tr><th>Frequency (MHz)</th><th>Factor (dB/m)</th></tr></thead><tbody>";
+
+        for (let freq of frequencies) {
+            let antennaResponse = await fetch(`/api/re102/antenna-factor?antenna=${antenna}&frequency=${freq}`);
+            let antennaData = await antennaResponse.json();
+            console.log(`Received antenna factor for ${freq} MHz:`, antennaData);
+
+            if (antennaResponse.ok && !antennaData.error) {
+                resultsHtml += `<tr><td>${antennaData.frequency_mhz}</td><td>${antennaData.factor_db_m}</td></tr>`;
+            } else {
+                resultsHtml += `<tr><td>${freq}</td><td style="color:red;">Error</td></tr>`;
+            }
+        }
+
+        resultsHtml += "</tbody></table>";
+        resultsDiv.innerHTML = resultsHtml;
+
+    } catch (error) {
+        console.error("Error in data fetching:", error);
+        resultsDiv.innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2>RE102 Calibration Calculator</h2>
+
+<form id="calibration-form">
+    <label for="version">Standard Version:</label>
+    <select id="version" name="version">
+        <option value="MIL-STD-461E">MIL-STD-461E</option>
+        <option value="MIL-STD-461F">MIL-STD-461F</option>
+        <option value="MIL-STD-461G">MIL-STD-461G</option>
+    </select>
+
+    <label for="category">Limit Category:</label>
+    <select id="category" name="category">
+        <option value="102-1">102-1 (Surface Ship)</option>
+        <option value="102-2">102-2 (Submarine)</option>
+        <option value="102-3">102-3 (Aircraft & Space)</option>
+        <option value="102-4">102-4 (Ground)</option>
+    </select>
+
+    <button type="submit">Calculate</button>
+</form>
+
+<div id="results"></div>
+
+<script>
+document.getElementById("calibration-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    let version = document.getElementById("version").value;
+    let category = document.getElementById("category").value;
+
+    fetch(`/api/re102/calibration?version=${version}&category=${category}`)
+        .then(response => response.json())
+        .then(data => {
+            let resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = ""; // Clear previous results
+
+            if (data.error) {
+                resultsDiv.innerHTML = `<p style="color:red;">Error: ${data.error}</p>`;
+                return;
+            }
+
+            data.forEach(limitLine => {
+                let tableHtml = `
+                    <h3>${limitLine.limit_line}</h3>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Frequency (MHz)</th>
+                                <th>Original Limit (dBµV/m)</th>
+                                <th>Calibration Value (dBµV/m)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                limitLine.calibration_data.forEach(row => {
+                    tableHtml += `
+                        <tr>
+                            <td>${row.frequency_mhz}</td>
+                            <td>${row.original_limit_dbuv_m}</td>
+                            <td>${row.calibration_dbuv_m}</td>
+                        </tr>
+                    `;
+                });
+
+                tableHtml += `</tbody></table>`;
+                resultsDiv.innerHTML += tableHtml;
+            });
+        })
+        .catch(error => console.error("Error:", error));
+});
+</script>
+{% endblock %}

@@ -1,0 +1,102 @@
+{
+    "standard": "MIL-STD-461G",
+    "test": "RE102",
+    "categories": [
+      {
+        "name": "FIGURE RE102-1. RE102 limit for surface ship applications",
+        "limits": [
+          {
+            "sub_category": "Below deck",
+            "data": [
+              {"frequency_mhz": 0.01, "limit_dbuv_m": 90},
+              {"frequency_mhz": 100, "limit_dbuv_m": 56},
+              {"frequency_mhz": 18000, "limit_dbuv_m": 102}
+            ]
+          },
+          {
+            "sub_category": "Above deck and exposed below deck",
+            "data": [
+              {"frequency_mhz": 0.01, "limit_dbuv_m": 70},
+              {"frequency_mhz": 100, "limit_dbuv_m": 36},
+              {"frequency_mhz": 18000, "limit_dbuv_m": 82}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "FIGURE RE102-2. RE102 limit for submarine applications",
+        "limits": [
+          {
+            "sub_category": "Internal to Pressure Hull",
+            "data": [
+              {"frequency_mhz": 0.01, "limit_dbuv_m": 88},
+              {"frequency_mhz": 0.8, "limit_dbuv_m": 50},
+              {"frequency_mhz": 100, "limit_dbuv_m": 50},
+              {"frequency_mhz": 18000, "limit_dbuv_m": 95}
+            ]
+          },
+          {
+            "sub_category": "External to Pressure Hull",
+            "data": [
+              {"frequency_mhz": 0.01, "limit_dbuv_m": 60},
+              {"frequency_mhz": 2, "limit_dbuv_m": 24},
+              {"frequency_mhz": 100, "limit_dbuv_m": 24},
+              {"frequency_mhz": 18000, "limit_dbuv_m": 69}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "FIGURE RE102-3. RE102 limit for aircraft and space system applications",
+        "limits": [
+          {
+            "sub_category": "Fixed wing internal, ≥25 meters nose to tail",
+            "data": [
+              {"frequency_mhz": 2, "limit_dbuv_m": 44},
+              {"frequency_mhz": 100, "limit_dbuv_m": 44},
+              {"frequency_mhz": 18000, "limit_dbuv_m": 89}
+            ]
+          },
+          {
+            "sub_category": "Fixed wing internal, ≤25 meters nose to tail",
+            "data": [
+              {"frequency_mhz": 2, "limit_dbuv_m": 34},
+              {"frequency_mhz": 100, "limit_dbuv_m": 34},
+              {"frequency_mhz": 18000, "limit_dbuv_m": 79}
+            ]
+          },
+          {
+            "sub_category": "Fixed wing external (2 MHz to 18GHz) and Helicopters",
+            "data": [
+              {"frequency_mhz": 0.01, "limit_dbuv_m": 60},
+              {"frequency_mhz": 2, "limit_dbuv_m": 24},
+              {"frequency_mhz": 100, "limit_dbuv_m": 24},
+              {"frequency_mhz": 18000, "limit_dbuv_m": 69}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "FIGURE RE102-4. RE102 limit for ground applications",
+        "limits": [
+          {
+            "sub_category": "Navy Fixed & Air Force",
+            "data": [
+              {"frequency_mhz": 2, "limit_dbuv_m": 44},
+              {"frequency_mhz": 100, "limit_dbuv_m": 44},
+              {"frequency_mhz": 18000, "limit_dbuv_m": 89}
+            ]
+          },
+          {
+            "sub_category": "Navy Mobile & Army",
+            "data": [
+              {"frequency_mhz": 2, "limit_dbuv_m": 24},
+              {"frequency_mhz": 100, "limit_dbuv_m": 24},
+              {"frequency_mhz": 18000, "limit_dbuv_m": 69}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  
